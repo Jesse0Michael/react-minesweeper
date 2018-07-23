@@ -1,0 +1,7 @@
+.coordinate {
+  width: 42px;
+  height: 42px;
+  float: left;
+  margin: 3px;
+  background-color: aqua;
+}
