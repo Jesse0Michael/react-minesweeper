@@ -43,6 +43,18 @@ class Board extends Component {
     if (!this.state.gameOver) {
       if (cord.bomb) {
         this.setState({ gameOver: true });
+        for (var i = 0; i < this.state.board.length; i++) {
+          for (var j = 0; j < this.state.board[i].length; j++) {
+            var evaluate = this.state.board[i][j];
+            if (evaluate.bomb) {
+              if (evaluate.value === "🚩") {
+                evaluate.value = "🏳";
+              } else {
+                evaluate.value = "💣";
+              }
+            }
+          }
+        }
         cord.value = "💥";
       } else {
         this.evaluateCord(cord);
@@ -51,8 +63,22 @@ class Board extends Component {
     this.setState({ board: this.state.board });
   };
 
+  // react to a location being right clicked
+  cordFlaged = cord => {
+    if (cord.value === "🚩") {
+      cord.value = "";
+    } else if (cord.value === "") {
+      cord.value = "🚩";
+    }
+    this.setState({ board: this.state.board });
+  };
+
   // evaluate a coordinate that has been clicked or is adjacend to a clicked coordinate that had no adjacent bombs
   evaluateCord(cord) {
+    if (cord.value === "🚩") {
+      return;
+    }
+
     var adjacentBombs = 0;
     for (var i = Math.max(cord.y - 1, 0); i <= Math.min(cord.y + 1, this.state.board.length - 1); i++) {
       for (var j = Math.max(cord.x - 1, 0); j <= Math.min(cord.x + 1, this.state.board[cord.y].length - 1); j++) {
@@ -79,14 +105,20 @@ class Board extends Component {
   }
 
   componentDidMount() {
-    this.setBoard(10, 8, 20);
+    this.setBoard(23, 16, 50);
   }
 
   renderRow(row) {
     return (
       <div className="row">
         {row.map(cord => {
-          return <Coordinate element={cord} onClick={() => this.cordClicked(cord)} />;
+          return (
+            <Coordinate
+              element={cord}
+              onClick={() => this.cordClicked(cord)}
+              onContextMenu={() => this.cordFlaged(cord)}
+            />
+          );
         })}
       </div>
     );
