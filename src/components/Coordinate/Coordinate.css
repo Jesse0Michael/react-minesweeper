@@ -1,7 +1,7 @@
 .coordinate {
-  width: 42px;
-  height: 42px;
+  width: 64px;
+  height: 64px;
   float: left;
   margin: 3px;
-  background-color: aqua;
+  padding: 0;
 }

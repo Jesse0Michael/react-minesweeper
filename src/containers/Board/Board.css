@@ -1,0 +1,8 @@
+.board {
+  max-width: 700px;
+  margin: 16px auto;
+}
+
+.row {
+  float: left;
+}
