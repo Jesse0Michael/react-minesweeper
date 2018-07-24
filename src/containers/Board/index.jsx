@@ -116,7 +116,7 @@ class Board extends Component {
             <Coordinate
               element={cord}
               onClick={() => this.cordClicked(cord)}
-              onContextMenu={() => this.cordFlaged(cord)}
+              onContextMenu={(e) => {e.preventDefault(); this.cordFlaged(cord)}}
             />
           );
         })}
