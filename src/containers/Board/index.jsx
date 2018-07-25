@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import "./Board.css";
 import Coordinate from "../../components/Coordinate";
+import GameOver from "../../components/GameOver";
 
 class Board extends Component {
   constructor(p) {
     super(p);
     this.state = {
       board: [],
-      gameOver: false
+      gameOver: false,
+      win: false
     };
   }
 
@@ -41,7 +43,7 @@ class Board extends Component {
       }
     }
     // set the board to be rendered
-    this.setState({ board: board, gameOver: false });
+    this.setState({ board: board, gameOver: false, win: false });
   }
 
   // react to a location being clicked by looking at this coordinate and the coordinates around it
@@ -51,7 +53,7 @@ class Board extends Component {
         this.cordFlaged(cord);
       } else {
         if (cord.bomb) {
-          this.setState({ gameOver: true });
+          this.setState({ gameOver: true, win: false });
           for (var i = 0; i < this.state.board.length; i++) {
             for (var j = 0; j < this.state.board[i].length; j++) {
               var evaluate = this.state.board[i][j];
@@ -67,6 +69,24 @@ class Board extends Component {
           cord.value = "💥";
         } else {
           this.evaluateCord(cord);
+
+          // check if you won
+          var win = true;
+          for (var i = 0; i < this.state.board.length; i++) {
+            for (var j = 0; j < this.state.board[i].length; j++) {
+              var evaluate = this.state.board[i][j];
+              if (!evaluate.bomb && evaluate.value === "") {
+                win = false;
+                break;
+              }
+            }
+            if (!win) {
+              break;
+            }
+          }
+          if (win) {
+            this.setState({ gameOver: true, win: true });
+          }
         }
         this.setState({ board: this.state.board });
       }
@@ -145,6 +165,7 @@ class Board extends Component {
     return (
       <div id="board" ref={board => (this.board = board)} className="board">
         <div>{this.state.board && this.state.board.map(row => this.renderRow(row))}</div>
+        {this.state.gameOver && <GameOver win={this.state.win} />}
       </div>
     );
   }

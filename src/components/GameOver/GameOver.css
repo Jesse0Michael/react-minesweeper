@@ -1,0 +1,10 @@
+.gameover {
+  font-size: 120px;
+  font-style: italic;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  position: fixed;
+  width: 100%;
+  top: 220px;
+}
