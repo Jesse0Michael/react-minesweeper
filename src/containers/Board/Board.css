@@ -1,8 +1,10 @@
 .board {
-  max-width: 900px;
-  margin: 16px auto;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  margin: auto;
+  padding: 8px;
 }
 
 .row {
-  float: left;
+  text-align: center;
 }

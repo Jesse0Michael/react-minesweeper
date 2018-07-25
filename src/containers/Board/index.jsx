@@ -59,18 +59,20 @@ class Board extends Component {
       } else {
         this.evaluateCord(cord);
       }
+      this.setState({ board: this.state.board });
     }
-    this.setState({ board: this.state.board });
   };
 
   // react to a location being right clicked
   cordFlaged = cord => {
-    if (cord.value === "🚩") {
-      cord.value = "";
-    } else if (cord.value === "") {
-      cord.value = "🚩";
+    if (!this.state.gameOver) {
+      if (cord.value === "🚩") {
+        cord.value = "";
+      } else if (cord.value === "") {
+        cord.value = "🚩";
+      }
+      this.setState({ board: this.state.board });
     }
-    this.setState({ board: this.state.board });
   };
 
   // evaluate a coordinate that has been clicked or is adjacend to a clicked coordinate that had no adjacent bombs
@@ -105,7 +107,15 @@ class Board extends Component {
   }
 
   componentDidMount() {
-    this.setBoard(23, 16, 50);
+    setTimeout(() => {
+      var height = this.board.clientHeight;
+      var width = this.board.clientWidth;
+      console.log(width + " x " + height);
+      var columns = Math.floor((width - 16) / 38);
+      var rows = Math.floor((height - 16) / 38);
+      var bombs = columns * rows * 0.2;
+      this.setBoard(columns, rows, bombs);
+    }, 1);
   }
 
   renderRow(row) {
@@ -116,7 +126,10 @@ class Board extends Component {
             <Coordinate
               element={cord}
               onClick={() => this.cordClicked(cord)}
-              onContextMenu={(e) => {e.preventDefault(); this.cordFlaged(cord)}}
+              onContextMenu={e => {
+                e.preventDefault();
+                this.cordFlaged(cord);
+              }}
             />
           );
         })}
@@ -125,7 +138,13 @@ class Board extends Component {
   }
 
   render() {
-    return <div className="board">{this.state.board && this.state.board.map(row => this.renderRow(row))}</div>;
+    return (
+      <div id="board" ref={(board) => this.board = board} className="board">
+      <div>
+        {this.state.board && this.state.board.map(row => this.renderRow(row))}
+        </div>
+      </div>
+    );
   }
 }
 

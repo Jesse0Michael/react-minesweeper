@@ -12,7 +12,7 @@ class App extends Component {
             <div className="mdl-layout-spacer"></div>
           </div>
         </header>
-        <main className="mdl-layout__content">
+        <main className="mdl-layout__content main">
           <Board />
         </main>
       </div>
