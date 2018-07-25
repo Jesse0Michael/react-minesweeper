@@ -75,7 +75,7 @@ class Board extends Component {
           for (var o = 0; o < this.state.board.length; o++) {
             for (var k = 0; k < this.state.board[o].length; k++) {
               var check = this.state.board[o][k];
-              if (!check.bomb && check.value === "") {
+              if (!check.bomb && (check.value === "" || check.value === "🚩")) {
                 win = false;
                 break;
               }
