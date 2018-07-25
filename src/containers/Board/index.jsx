@@ -72,10 +72,10 @@ class Board extends Component {
 
           // check if you won
           var win = true;
-          for (var i = 0; i < this.state.board.length; i++) {
-            for (var j = 0; j < this.state.board[i].length; j++) {
-              var evaluate = this.state.board[i][j];
-              if (!evaluate.bomb && evaluate.value === "") {
+          for (var o = 0; o < this.state.board.length; o++) {
+            for (var k = 0; k < this.state.board[o].length; k++) {
+              var check = this.state.board[o][k];
+              if (!check.bomb && check.value === "") {
                 win = false;
                 break;
               }
