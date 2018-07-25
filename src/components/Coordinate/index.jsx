@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import "./Coordinate.css";
 
 class Coordinate extends Component {
+  handleButtonPress() {
+    this.buttonPressTimer = setTimeout(() => alert("long press activated"), 1500);
+  }
+
+  handleButtonRelease() {
+    clearTimeout(this.buttonPressTimer);
+  }
+
   render() {
     return (
       <button
@@ -10,7 +18,7 @@ class Coordinate extends Component {
         onContextMenu={this.props.onContextMenu}
         disabled={this.props.element.value !== "" && this.props.element.value !== "🚩"}
       >
-      {this.props.element.value}
+        {this.props.element.value}
       </button>
     );
   }

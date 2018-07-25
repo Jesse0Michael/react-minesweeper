@@ -11,7 +11,13 @@ class Board extends Component {
     };
   }
 
-  setBoard(columns, rows, mines) {
+  setBoard() {
+    var height = this.board.clientHeight;
+    var width = this.board.clientWidth;
+    var columns = Math.floor((width - 16) / 38);
+    var rows = Math.floor((height - 16) / 38);
+    var mines = columns * rows * 0.2;
+
     // create the game board
     var board = [];
     for (var i = 0; i < rows; i++) {
@@ -35,31 +41,35 @@ class Board extends Component {
       }
     }
     // set the board to be rendered
-    this.setState({ board: board });
+    this.setState({ board: board, gameOver: false });
   }
 
   // react to a location being clicked by looking at this coordinate and the coordinates around it
   cordClicked = cord => {
     if (!this.state.gameOver) {
-      if (cord.bomb) {
-        this.setState({ gameOver: true });
-        for (var i = 0; i < this.state.board.length; i++) {
-          for (var j = 0; j < this.state.board[i].length; j++) {
-            var evaluate = this.state.board[i][j];
-            if (evaluate.bomb) {
-              if (evaluate.value === "🚩") {
-                evaluate.value = "🏳";
-              } else {
-                evaluate.value = "💣";
+      if (this.props.flagAction) {
+        this.cordFlaged(cord);
+      } else {
+        if (cord.bomb) {
+          this.setState({ gameOver: true });
+          for (var i = 0; i < this.state.board.length; i++) {
+            for (var j = 0; j < this.state.board[i].length; j++) {
+              var evaluate = this.state.board[i][j];
+              if (evaluate.bomb) {
+                if (evaluate.value === "🚩") {
+                  evaluate.value = "🏳";
+                } else {
+                  evaluate.value = "💣";
+                }
               }
             }
           }
+          cord.value = "💥";
+        } else {
+          this.evaluateCord(cord);
         }
-        cord.value = "💥";
-      } else {
-        this.evaluateCord(cord);
+        this.setState({ board: this.state.board });
       }
-      this.setState({ board: this.state.board });
     }
   };
 
@@ -108,13 +118,7 @@ class Board extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      var height = this.board.clientHeight;
-      var width = this.board.clientWidth;
-      console.log(width + " x " + height);
-      var columns = Math.floor((width - 16) / 38);
-      var rows = Math.floor((height - 16) / 38);
-      var bombs = columns * rows * 0.2;
-      this.setBoard(columns, rows, bombs);
+      this.setBoard();
     }, 1);
   }
 
@@ -139,10 +143,8 @@ class Board extends Component {
 
   render() {
     return (
-      <div id="board" ref={(board) => this.board = board} className="board">
-      <div>
-        {this.state.board && this.state.board.map(row => this.renderRow(row))}
-        </div>
+      <div id="board" ref={board => (this.board = board)} className="board">
+        <div>{this.state.board && this.state.board.map(row => this.renderRow(row))}</div>
       </div>
     );
   }
