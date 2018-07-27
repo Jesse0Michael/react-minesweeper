@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Board.css";
 import Coordinate from "../../components/Coordinate";
 import GameOver from "../../components/GameOver";
+import ReactGA from "react-ga";
 
 class Board extends Component {
   constructor(p) {
@@ -44,56 +45,55 @@ class Board extends Component {
     }
     // set the board to be rendered
     this.setState({ board: board, gameOver: false, win: false });
+    ReactGA.event({ category: "game", action: "new" });
   }
 
   // react to a location being clicked by looking at this coordinate and the coordinates around it
   cordClicked = cord => {
     if (!this.state.gameOver) {
-      if (this.props.flagAction) {
-        this.cordFlaged(cord);
-      } else {
-        if (cord.bomb) {
-          this.setState({ gameOver: true, win: false });
-          for (var i = 0; i < this.state.board.length; i++) {
-            for (var j = 0; j < this.state.board[i].length; j++) {
-              var evaluate = this.state.board[i][j];
-              if (evaluate.bomb) {
-                if (evaluate.value === "🚩") {
-                  evaluate.value = "🏳";
-                } else {
-                  evaluate.value = "💣";
-                }
+      if (cord.bomb) {
+        this.setState({ gameOver: true, win: false });
+        ReactGA.event({ category: "game", action: "lose" });
+        for (var i = 0; i < this.state.board.length; i++) {
+          for (var j = 0; j < this.state.board[i].length; j++) {
+            var evaluate = this.state.board[i][j];
+            if (evaluate.bomb) {
+              if (evaluate.value === "🚩") {
+                evaluate.value = "🏳";
+              } else {
+                evaluate.value = "💣";
               }
             }
           }
-          cord.value = "💥";
-        } else {
-          this.evaluateCord(cord);
+        }
+        cord.value = "💥";
+      } else {
+        this.evaluateCord(cord);
 
-          // check if you won
-          var win = true;
-          for (var o = 0; o < this.state.board.length; o++) {
-            for (var k = 0; k < this.state.board[o].length; k++) {
-              var check = this.state.board[o][k];
-              if (!check.bomb && (check.value === "" || check.value === "🚩")) {
-                win = false;
-                break;
-              }
-            }
-            if (!win) {
+        // check if you won
+        var win = true;
+        for (var o = 0; o < this.state.board.length; o++) {
+          for (var k = 0; k < this.state.board[o].length; k++) {
+            var check = this.state.board[o][k];
+            if (!check.bomb && (check.value === "" || check.value === "🚩")) {
+              win = false;
               break;
             }
           }
-          if (win) {
-            this.setState({ gameOver: true, win: true });
+          if (!win) {
+            break;
           }
         }
-        this.setState({ board: this.state.board });
+        if (win) {
+          this.setState({ gameOver: true, win: true });
+          ReactGA.event({ category: "game", action: "win" });
+        }
       }
+      this.setState({ board: this.state.board });
     }
   };
 
-  // react to a location being right clicked
+  // react to a location being flagged
   cordFlaged = cord => {
     if (!this.state.gameOver) {
       if (cord.value === "🚩") {
@@ -107,10 +107,12 @@ class Board extends Component {
 
   // evaluate a coordinate that has been clicked or is adjacend to a clicked coordinate that had no adjacent bombs
   evaluateCord(cord) {
+    // don't evaluate flagged coordinates
     if (cord.value === "🚩") {
       return;
     }
 
+    // count the number of adjacent bombs
     var adjacentBombs = 0;
     for (var i = Math.max(cord.y - 1, 0); i <= Math.min(cord.y + 1, this.state.board.length - 1); i++) {
       for (var j = Math.max(cord.x - 1, 0); j <= Math.min(cord.x + 1, this.state.board[cord.y].length - 1); j++) {
@@ -139,7 +141,7 @@ class Board extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.setBoard();
-    }, 1);
+    }, 200);
   }
 
   renderRow(row) {
@@ -149,7 +151,13 @@ class Board extends Component {
           return (
             <Coordinate
               element={cord}
-              onClick={() => this.cordClicked(cord)}
+              onClick={() => {
+                if (this.state.flagAction) {
+                  this.cordFlaged(cord);
+                } else {
+                  this.cordClicked(cord);
+                }
+              }}
               onContextMenu={e => {
                 e.preventDefault();
                 this.cordFlaged(cord);

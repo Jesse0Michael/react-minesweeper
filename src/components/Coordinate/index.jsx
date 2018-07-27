@@ -2,13 +2,6 @@ import React, { Component } from "react";
 import "./Coordinate.css";
 
 class Coordinate extends Component {
-  handleButtonPress() {
-    this.buttonPressTimer = setTimeout(() => alert("long press activated"), 1500);
-  }
-
-  handleButtonRelease() {
-    clearTimeout(this.buttonPressTimer);
-  }
 
   render() {
     return (

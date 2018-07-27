@@ -5,7 +5,7 @@
 
 .drawer {
   padding: 16px;
-  
+
 }
 
 .action {
@@ -13,4 +13,13 @@
   width: 32px;
   min-width: 32px;
   margin: auto 8px;
+}
+
+.action-info {
+  height: 16px;
+  width: 16px;
+  min-width: 16px;
+  margin: auto;
+  display: inline-block;
+  font-size: 8px;
 }

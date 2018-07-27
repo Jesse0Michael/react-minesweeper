@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Board from "../../containers/Board";
 import "./App.css";
 
+
 class App extends Component {
   constructor(p) {
     super(p);
@@ -51,9 +52,11 @@ class App extends Component {
           that spot.
           <br />
           <br />
-          If you've narrowed down the location of a bomb, right click, or toggle the click action, to place a flag on
-          that location.
-          <br />
+          <span>If you've narrowed down the location of a bomb, right click, or toggle the click action, to place a flag on
+          that location. <div className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored action-info" >
+              <i className="material-icons action-info">search</i>
+            </div>
+            </span>
           <br />
           You win when there are no uncovered safe spaces left!
         </div>
