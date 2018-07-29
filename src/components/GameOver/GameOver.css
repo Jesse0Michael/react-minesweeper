@@ -1,11 +1,15 @@
 .gameover {
-  font-size: 64px;
-  line-height: 64px;
-  font-style: italic;
-  font-weight: 900;
-  text-align: center;
+  min-height: 160px;
   text-transform: uppercase;
   position: fixed;
-  width: 100%;
   top: 220px;
+}
+
+.right {
+  float: right;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
 }

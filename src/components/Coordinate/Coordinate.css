@@ -4,4 +4,6 @@
   min-width: 32px;
   margin: 3px;
   padding: 0;
+  transition: background-color;
+  transition-timing-function: ease-out;
 }

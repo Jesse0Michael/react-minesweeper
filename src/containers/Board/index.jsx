@@ -14,7 +14,7 @@ class Board extends Component {
     };
   }
 
-  setBoard() {
+  setBoard = () => {
     var height = this.board.clientHeight;
     var width = this.board.clientWidth;
     var columns = Math.floor((width - 16) / 38);
@@ -152,7 +152,7 @@ class Board extends Component {
             <Coordinate
               element={cord}
               onClick={() => {
-                if (this.state.flagAction) {
+                if (this.props.flagAction) {
                   this.cordFlaged(cord);
                 } else {
                   this.cordClicked(cord);
@@ -173,7 +173,7 @@ class Board extends Component {
     return (
       <div id="board" ref={board => (this.board = board)} className="board">
         <div>{this.state.board && this.state.board.map(row => this.renderRow(row))}</div>
-        {this.state.gameOver && <GameOver win={this.state.win} />}
+        {this.state.gameOver && <GameOver win={this.state.win} newGameFunc={this.setBoard} />}
       </div>
     );
   }
