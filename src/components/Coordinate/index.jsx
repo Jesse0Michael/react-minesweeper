@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./Coordinate.css";
 
 class Coordinate extends Component {
-
   setStyle() {
     if (this.props.gameOver && !this.props.win) {
       var r = Math.round(Math.random() * 255) + 50;

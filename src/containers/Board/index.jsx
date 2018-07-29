@@ -46,7 +46,7 @@ class Board extends Component {
     // set the board to be rendered
     this.setState({ board: board, gameOver: false, win: false });
     ReactGA.event({ category: "game", action: "new" });
-  }
+  };
 
   // react to a location being clicked by looking at this coordinate and the coordinates around it
   cordClicked = cord => {
