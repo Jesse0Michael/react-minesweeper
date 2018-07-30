@@ -180,3 +180,5 @@ class Board extends Component {
 }
 
 export default Board;
+
+//check win condition text, have box fly in, give close option, have setBoard wait or retry until theres more than 0 boxes, time play
