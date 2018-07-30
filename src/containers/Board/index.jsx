@@ -21,6 +21,13 @@ class Board extends Component {
     var rows = Math.floor((height - 16) / 38);
     var mines = columns * rows * 0.2;
 
+    // handle when the height hasn't rendered yet
+    if (columns === 0 || rows === 0) {
+      setTimeout(() => {
+        this.setBoard();
+      }, 200);
+    }
+
     // create the game board
     var board = [];
     for (var i = 0; i < rows; i++) {
@@ -180,5 +187,3 @@ class Board extends Component {
 }
 
 export default Board;
-
-//check win condition text, have box fly in, give close option, have setBoard wait or retry until theres more than 0 boxes, time play
