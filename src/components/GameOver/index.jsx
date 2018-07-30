@@ -20,7 +20,7 @@ class GameOver extends Component {
           ref={over => (this.over = over)}
           className={"demo-card-wide mdl-card mdl-shadow--2dp gameover animated " + this.state.animation}
         >
-          {this.propswin && (
+          {this.props.win && (
             <div>
               <div className="mdl-card__title">
                 <h2 className="mdl-card__title-text">YOU WIN!</h2>
