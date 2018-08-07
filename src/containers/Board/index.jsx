@@ -57,7 +57,7 @@ class Board extends Component {
 
   // react to a location being clicked by looking at this coordinate and the coordinates around it
   cordClicked = cord => {
-    if (!this.state.gameOver) {
+    if (!this.state.gameOver && cord.value !== "🚩") {
       if (cord.bomb) {
         this.setState({ gameOver: true, win: false });
         ReactGA.event({ category: "game", action: "lose" });
