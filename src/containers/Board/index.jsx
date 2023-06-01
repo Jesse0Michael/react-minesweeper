@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Board.css";
 import Coordinate from "../../components/Coordinate";
 import GameOver from "../../components/GameOver";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 class Board extends Component {
   constructor(p) {
